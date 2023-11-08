@@ -1,12 +1,19 @@
 class UsersController < ApplicationController
 
-  def index
+  def home
     matching_users = User.all
     @users = matching_users.order(:created_at)
 
-    render({ :template => "users_templates/all_users"})
+    render({ :template => "user_templates/all_users"})
   end
   
+  def all_users
+    matching_users = User.all
+    @users = matching_users.order(:created_at)
+
+    render({ :template => "user_templates/all_users"})
+  end
+
   def show
     username = params.fetch("username")
     matching_users = User.where({ :username => username })
@@ -26,11 +33,11 @@ class UsersController < ApplicationController
   def update
     user_id = params.fetch("user_id")
     matching_users = User.where({ :id => user_id })
-    the_user = matching_users.at(0)
+    @the_user = matching_users.at(0)
     
-    the_user.username = params.fetch("query_username")
-    the_user.save
-    redirect_to("/users/#{user.username}")
+    @the_user.username = params.fetch("query_username")
+    @the_user.save
+    redirect_to("/users/#{@the_user.username}")
   end
 
 end
